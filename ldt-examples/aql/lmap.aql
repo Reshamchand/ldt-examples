@@ -1,0 +1,59 @@
+print '<< -----------  <><><><><><><><><><> -------------- >> '
+print '<< -----------   LMAP  AQL EXAMPLE ---------------- >> '
+print '<< -----------  <><><><><><><><><><> -------------- >> '
+
+print 'The generic format for UDF/LDT calls is:'
+print 'execute MODULE.FUNCTION(ARGS) on NS.SET where pk = KEY'
+
+print 'Large MAP Commands are:'
+print '(*) Status = put( topRec, ldtBinName, newName, newValue, userModule) '
+print '(*) Status = put_all( topRec, ldtBinName, nameValueMap, userModule)'
+print '(*) List   = get( topRec, ldtBinName, searchName )'
+print '(*) List   = scan( topRec, ldtBinName )'
+print '(*) List   = filter( topRec, ldtBinName, userModule, filter, fargs )'
+print '(*) Object = remove( topRec, ldtBinName, searchName )'
+print '(*) Status = destroy( topRec, ldtBinName )'
+print '(*) Number = size( topRec, ldtBinName )'
+print '(*) Map    = get_config( topRec, ldtBinName )'
+print '(*) Status = set_capacity( topRec, ldtBinName, new_capacity)'
+print '(*) Status = get_capacity( topRec, ldtBinName )'
+
+print 'Add some elements into the Large Map.'
+execute lmap.put('LMAP_BIN', 55, '55 string') on test.demo where pk = 'Key_1' 
+execute lmap.put('LMAP_BIN',  5, '05 string') on test.demo where pk = 'Key_1' 
+execute lmap.put('LMAP_BIN', 25, '25 string') on test.demo where pk = 'Key_1' 
+execute lmap.put('LMAP_BIN', 75, '75 string') on test.demo where pk = 'Key_1' 
+execute lmap.put('LMAP_BIN', 15, '15 string') on test.demo where pk = 'Key_1' 
+execute lmap.put('LMAP_BIN', 45, '45 string') on test.demo where pk = 'Key_1' 
+execute lmap.put('LMAP_BIN', 35, '35 string') on test.demo where pk = 'Key_1' 
+
+print 'Find element 25'
+execute lmap.get('LMAP_BIN', 25) on test.demo where pk = 'Key_1'
+
+print 'Scan the LDT'
+execute lmap.scan('LMAP_BIN') on test.demo where pk = 'Key_1'
+
+print 'Get the size of the LDT'
+execute lmap.size('LMAP_BIN') on test.demo where pk = 'Key_1'
+
+print 'Remove element 45'
+execute lmap.remove('LMAP_BIN', 45) on test.demo where pk = 'Key_1'
+
+print 'Scan the LDT (to verify it was removed)'
+execute lmap.scan('LMAP_BIN') on test.demo where pk = 'Key_1'
+
+print 'Look at the configuration of the LDT'
+execute lmap.get_config('LMAP_BIN') on test.demo where pk = 'Key_1'
+
+print 'Get the capacity of the LDT'
+execute lmap.get_capacity('LMAP_BIN') on test.demo where pk = 'Key_1'
+
+print 'Remove the LDT'
+execute lmap.destroy('LMAP_BIN') on test.demo where pk = 'Key_1'
+
+print ' <><><> ALL DONE!! <><><>'
+
+
+
+
+
