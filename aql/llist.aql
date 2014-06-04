@@ -1,0 +1,55 @@
+print '<< -----------  <><><><><><><><><><> -------------- >> '
+print '<< -----------   LLIST AQL EXAMPLE ---------------- >> '
+print '<< -----------  <><><><><><><><><><> -------------- >> '
+
+print 'The generic format for UDF/LDT calls is:'
+print 'ascli udf-record-apply NS SET KEY MODULE FUNCTION ARGS'
+
+print 'Large List Commands are:'
+print ' (*) Status = add( topRec, ldtBinName, newValue, userModule )'
+print ' (*) Status = add_all( topRec, ldtBinName, valueList, userModule )'
+print ' (*) List   = find( topRec, bin, value, module, filter, fargs )'
+print ' (*) List   = scan( topRec, ldtBinName )'
+print ' (*) List   = filter( topRec, ldtBinName, userModule, filter, fargs )'
+print ' (*) Status = remove( topRec, ldtBinName, searchValue ) '
+print ' (*) Status = destroy( topRec, ldtBinName )'
+print ' (*) Number = size( topRec, ldtBinName )'
+print ' (*) Map    = get_config( topRec, ldtBinName )'
+print ' (*) Status = set_capacity( topRec, ldtBinName, new_capacity)'
+print ' (*) Status = get_capacity( topRec, ldtBinName )'
+
+
+print 'Add some elements into the LDT'
+execute llist.add('LLIST_BIN', 55) on test.demo where pk = 'Key_1'
+execute llist.add('LLIST_BIN',  5) on test.demo where pk = 'Key_1'
+execute llist.add('LLIST_BIN', 25) on test.demo where pk = 'Key_1'
+execute llist.add('LLIST_BIN', 75) on test.demo where pk = 'Key_1'
+execute llist.add('LLIST_BIN', 15) on test.demo where pk = 'Key_1'
+execute llist.add('LLIST_BIN', 45) on test.demo where pk = 'Key_1'
+execute llist.add('LLIST_BIN', 35) on test.demo where pk = 'Key_1'
+
+print 'Find element 25'
+execute llist.find('LLIST_BIN', 25) on test.demo where pk = 'Key_1'
+
+print 'Scan the LDT'
+execute llist.scan('LLIST_BIN') on test.demo where pk = 'Key_1'
+
+print 'Get the size of the LDT'
+execute llist.size('LLIST_BIN') on test.demo where pk = 'Key_1'
+
+print 'Remove element 45'
+execute llist.remove('LLIST_BIN', 45) on test.demo where pk = 'Key_1'
+
+print 'Scan the LDT (to verify it was removed)'
+execute llist.scan('LLIST_BIN') on test.demo where pk = 'Key_1'
+
+print 'Look at the configuration of the LDT'
+execute llist.get_config('LLIST_BIN') on test.demo where pk = 'Key_1'
+
+print 'Get the capacity of the LDT'
+execute llist.get_capacity('LLIST_BIN') on test.demo where pk = 'Key_1'
+
+print 'Remove the LDT'
+execute llist.destroy('LLIST_BIN') on test.demo where pk = 'Key_1'
+
+print ' <><><> ALL DONE!! <><><>'

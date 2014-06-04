@@ -1,0 +1,57 @@
+print '<< -----------  <><><><><><><><><><> -------------- >> '
+print '<< -----------   LSET  ASCLI EXAMPLE -------------- >> '
+print '<< -----------  <><><><><><><><><><> -------------- >> '
+
+print 'The generic format for UDF/LDT calls is:'
+print 'ascli udf-record-apply NS SET KEY MODULE FUNCTION ARGS'
+
+print 'Large SET Commands are:'
+print ' (*) Status = add( topRec, ldtBinName, newValue, userModule )'
+print ' (*) Status = add_all( topRec, ldtBinName, valueList, userModule )'
+print ' (*) Object = get( topRec, ldtBinName, searchValue ) '
+print ' (*) Number = exists( topRec, ldtBinName, searchValue ) '
+print ' (*) List   = scan( topRec, ldtBinName )'
+print ' (*) List   = filter( topRec, ldtBinName, userModule, filter, fargs )'
+print ' (*) Status = remove( topRec, ldtBinName, searchValue ) '
+print ' (*) Object = take( topRec, ldtBinName, searchValue ) '
+print ' (*) Status = destroy( topRec, ldtBinName )'
+print ' (*) Number = size( topRec, ldtBinName )'
+print ' (*) Map    = get_config( topRec, ldtBinName )'
+print ' (*) Status = set_capacity( topRec, ldtBinName, new_capacity)'
+print ' (*) Status = get_capacity( topRec, ldtBinName )'
+
+
+print 'Add some elements into the Large Set.'
+execute lset.add('LSET_BIN',55) on test.demo where pk = 'Key_1'
+execute lset.add('LSET_BIN', 5) on test.demo where pk = 'Key_1'
+execute lset.add('LSET_BIN',25) on test.demo where pk = 'Key_1'
+execute lset.add('LSET_BIN',75) on test.demo where pk = 'Key_1'
+execute lset.add('LSET_BIN',15) on test.demo where pk = 'Key_1'
+execute lset.add('LSET_BIN',45) on test.demo where pk = 'Key_1'
+execute lset.add('LSET_BIN',35) on test.demo where pk = 'Key_1'
+
+print 'get element 25'
+execute lset.get('LSET_BIN', 25) on test.demo where pk = 'Key_1'
+
+print 'Scan the LDT'
+execute lset.scan('LSET_BIN') on test.demo where pk = 'Key_1'
+
+print 'Get the size of the LDT'
+execute lset.size('LSET_BIN') on test.demo where pk = 'Key_1'
+
+print 'Remove element 45 from the LDT'
+execute lset.remove('LSET_BIN', 45) on test.demo where pk = 'Key_1'
+
+print 'Scan the LDT (to verify it was removed)'
+execute lset.scan('LSET_BIN') on test.demo where pk = 'Key_1'
+
+print 'Look at the configuration of the LDT'
+execute lset.get_config('LSET_BIN') on test.demo where pk = 'Key_1'
+
+print 'Get the capacity of the LDT'
+execute lset.get_capacity('LSET_BIN') on test.demo where pk = 'Key_1'
+
+print 'Remove the LDT'
+execute lset.destroy('LSET_BIN') on test.demo where pk = 'Key_1'
+
+print ' <><><> ALL DONE!! <><><>'
