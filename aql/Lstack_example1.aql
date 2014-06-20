@@ -1,0 +1,55 @@
+# Test LSTACK with Filters using AQL
+# 
+# These commands are fed into AQL.
+# To execute this file, at the terminal prompt do:
+#
+# aql < lstack_filter.aql
+# ----------------
+# For this example, we will use the following names:
+# NameSpace = "test"
+# Set       = "ldt_set"
+# ----------------
+# Set echo true so we can see the commands we are executing on stdout.
+SET ECHO false
+SET VERBOSE false
+
+# Be conservative -- set a very high timeout
+set timeout 6000
+
+# Register our Sample UDF, then sleep for a moment to give it time to work.
+REGISTER MODULE '/Users/peter/git/aerospike/ldt-examples/udf/sample_filters.lua'
+#SYSCMD sleep 4 
+SHOW MODULES
+
+# Create the record, then create the LDT.
+INSERT INTO test.ldt_set (PK, bin1 ) VALUES ('example1_key', 111)
+
+# =========================================================
+# Perform a record UDF (an LDT operation) call using QUERY
+# =========================================================
+
+print 'Add 20 items to the Large Stack LDT'
+
+EXECUTE lstack.push('LStackBin', 'JSON{"key":555, "BB":12}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":544, "BB":13}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":666, "BB":14}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":644, "BB":15}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":333, "BB":16}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":344, "BB":17}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":777, "BB":18}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":744, "BB":19}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":111, "BB":20}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":144, "BB":21}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":888, "BB":22}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":844, "BB":23}') ON test.ldt_set WHERE PK = 'example1_key'
+EXECUTE lstack.push('LStackBin', 'JSON{"key":222, "BB":24}') ON test.ldt_set WHERE PK = 'example1_key'
+
+EXECUTE lstack.push('LStackBin', 'FOO') ON test.ldt_set WHERE PK = 'example1_key'
+
+EXECUTE lstack.peek('LStackBin', 0) ON test.ldt_set WHERE PK = 'example1_key'
+
+EXECUTE lstack.size('LStackBin') ON test.ldt_set WHERE PK = 'example1_key'
+
+EXECUTE lstack.filter('LStackBin', 0, 'sample_filters', 'rangeFilter1', 'JSON[{"FieldName":"key","MinValue":300,"MaxValue":600}]') ON test.ldt_set WHERE PK = 'example1_key'
+
+EXECUTE lstack.destroy('LStackBin') ON test.ldt_set WHERE PK = 'example1_key'

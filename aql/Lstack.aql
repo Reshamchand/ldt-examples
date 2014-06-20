@@ -1,0 +1,49 @@
+print '<< -----------  <><><><><><><><><><><><> -------------- >> '
+print '<< -----------    LSTACK  ASCLI EXAMPLE  -------------- >> '
+print '<< -----------  <><><><><><><><><><><><> -------------- >> '
+
+print 'The generic format for UDF/LDT calls is:'
+print 'ascli udf-record-apply NS SET KEY MODULE FUNCTION ARGS'
+
+print 'Large STACK Commands are:'
+print ' (*) Status = push( topRec, ldtBinName, newValue, userModule )'
+print ' (*) Status = push_all( topRec, ldtBinName, valueList, userModule )'
+print ' (*) List   = peek( topRec, ldtBinName, peekCount ) '
+print ' (*) List   = pop( topRec, ldtBinName, popCount ) '
+print ' (*) List   = scan( topRec, ldtBinName )'
+print ' (*) List   = filter( topRec, ldtBinName, peekCount,userModule,filter,fargs)'
+print ' (*) Status = destroy( topRec, ldtBinName )'
+print ' (*) Number = size( topRec, ldtBinName )'
+print ' (*) Map    = get_config( topRec, ldtBinName )'
+print ' (*) Status = set_capacity( topRec, ldtBinName, new_capacity)'
+print ' (*) Status = get_capacity( topRec, ldtBinName )'
+
+print 'Add some elements into the LDT'
+execute lstack.push('LSTACK_BIN', 55) on test.demo where pk = 'Key_1'
+execute lstack.push('LSTACK_BIN',  5) on test.demo where pk = 'Key_1'
+execute lstack.push('LSTACK_BIN', 25) on test.demo where pk = 'Key_1'
+execute lstack.push('LSTACK_BIN', 75) on test.demo where pk = 'Key_1'
+execute lstack.push('LSTACK_BIN', 15) on test.demo where pk = 'Key_1'
+execute lstack.push('LSTACK_BIN', 45) on test.demo where pk = 'Key_1'
+execute lstack.push('LSTACK_BIN', 35) on test.demo where pk = 'Key_1'
+
+print 'get one element from the large stack'
+execute lstack.peek('LSTACK_BIN', 1) on test.demo where pk = 'Key_1'
+
+print 'Scan the LDT'
+execute lstack.scan('LSTACK_BIN') on test.demo where pk = 'Key_1'
+
+print 'Get the size of the LDT'
+execute lstack.size('LSTACK_BIN') on test.demo where pk = 'Key_1'
+
+print 'Look at the configuration of the LDT'
+execute lstack.get_config('LSTACK_BIN') on test.demo where pk = 'Key_1'
+
+print 'Get the capacity of the LDT'
+execute lstack.get_capacity('LSTACK_BIN') on test.demo where pk = 'Key_1'
+
+print 'Remove the LDT'
+execute lstack.destroy('LSTACK_BIN') on test.demo where pk = 'Key_1'
+
+print ' <><><> ALL DONE!! <><><>'
+
